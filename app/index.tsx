@@ -5,7 +5,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>DatingApp</Text>
+        <Text style={styles.title}>One</Text>
       </View>
       <View style={styles.buttonContainer}>
         <Link href="/src/login/login" style={styles.button}>
@@ -13,6 +13,9 @@ export default function Index() {
         </Link>
         <Link href="/src/login/create-account" style={styles.button}>
           Create account
+      </Link>
+        <Link href="/src/map/map" style={styles.button}>
+          Map
       </Link>
       </View>
     </View>
