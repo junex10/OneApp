@@ -1,25 +1,42 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, Alert, Linking, Platform  } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 import { LeafletView } from 'react-native-leaflet-view';
-
-const DEFAULT_LOCATION = {
-  latitude: -23.5489,
-  longitude: -46.6388
-}
+import * as Location from 'expo-location';
 
 const Map: React.FC = () => {
+
+  const router = useRouter();
   
   const [webViewContent, setWebViewContent] = useState<string | null>(null);
-  const router = useRouter();
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
+
+    const getCurrentLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied, we need your location, please grant us your location');
+        
+        if (Platform.OS == 'ios') {
+          Linking.openURL('app-settings:');
+        } else {
+          Linking.openSettings();
+        }
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+
+      setLocation(location);
+    }
     
-    const loadHtml = async () => {
+    const loadMap = async () => {
       try {
         const path = require("./../../../assets/leaflet.html");
         const asset = Asset.fromModule(path);
@@ -41,7 +58,8 @@ const Map: React.FC = () => {
       }
     };
 
-    loadHtml();
+    getCurrentLocation();
+    loadMap();
 
     return () => {
       isMounted = false;
@@ -56,8 +74,8 @@ const Map: React.FC = () => {
         <LeafletView
           source={{ html: webViewContent }}
           mapCenterPosition={{
-            lat: DEFAULT_LOCATION.latitude,
-            lng: DEFAULT_LOCATION.longitude,
+            lat: location?.coords.latitude,
+            lng: location?.coords.longitude,
           }}
         />
       </>
