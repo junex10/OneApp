@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, ActivityIndicator, Alert } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 import { LeafletView } from 'react-native-leaflet-view';
@@ -12,10 +12,13 @@ const DEFAULT_LOCATION = {
 }
 
 const Map: React.FC = () => {
-    const [webViewContent, setWebViewContent] = useState<string | null>(null);
+  
+  const [webViewContent, setWebViewContent] = useState<string | null>(null);
+  const router = useRouter();
+
   useEffect(() => {
     let isMounted = true;
-
+    
     const loadHtml = async () => {
       try {
         const path = require("./../../../assets/leaflet.html");
@@ -27,8 +30,14 @@ const Map: React.FC = () => {
           setWebViewContent(htmlContent);
         }
       } catch (error) {
-        Alert.alert('Error loading HTML', JSON.stringify(error));
-        console.error('Error loading HTML:', error);
+        Alert.alert('Map', JSON.stringify('Error loading map'), [
+          {
+            text: 'OK', onPress: () => {
+              router.replace('./../login/create-account')
+            }
+          },
+        ]);
+        console.error('Error loading map:', error);
       }
     };
 

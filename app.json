@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "test-publish-app",
-    "slug": "test-publish-app",
+    "name": "One",
+    "slug": "One",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
