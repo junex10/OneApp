@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Link } from 'expo-router';
 
-function Login() {
+const Login: React.FC = () => {
     return (
       <>
         <Text>This is the login</Text>

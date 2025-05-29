@@ -44,11 +44,6 @@ const Map: React.FC = () => {
   }
     return (
       <>
-        {/*<Text>This is the map</Text>
-        <Link href="./create-account" style={styles.button}>
-          Go back to Home screen!
-        </Link>
-        <StatusBar style="auto" />*/}
         <LeafletView
           source={{ html: webViewContent }}
           mapCenterPosition={{
