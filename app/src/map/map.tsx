@@ -22,7 +22,7 @@ const Map: React.FC = () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied, we need your location, please grant us your location');
-        
+
         if (Platform.OS == 'ios') {
           Linking.openURL('app-settings:');
         } else {
