@@ -1,15 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, ActivityIndicator, Alert, Linking, Platform  } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 import { LeafletView } from 'react-native-leaflet-view';
 import * as Location from 'expo-location';
+import { useLocation } from '../../providers/location';
 
 const Map: React.FC = () => {
 
   const router = useRouter();
+  const getLocation: any = useLocation();
+  let interval: NodeJS.Timeout;
   
   const [webViewContent, setWebViewContent] = useState<string | null>(null);
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
@@ -17,24 +20,6 @@ const Map: React.FC = () => {
 
   useEffect(() => {
     let isMounted = true;
-
-    const getCurrentLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied, we need your location, please grant us your location');
-
-        if (Platform.OS == 'ios') {
-          Linking.openURL('app-settings:');
-        } else {
-          Linking.openSettings();
-        }
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-
-      setLocation(location);
-    }
     
     const loadMap = async () => {
       try {
@@ -58,7 +43,6 @@ const Map: React.FC = () => {
       }
     };
 
-    getCurrentLocation();
     loadMap();
 
     return () => {
@@ -74,8 +58,8 @@ const Map: React.FC = () => {
         <LeafletView
           source={{ html: webViewContent }}
           mapCenterPosition={{
-            lat: location?.coords.latitude,
-            lng: location?.coords.longitude,
+            lat: getLocation?.coords.latitude,
+            lng: getLocation?.coords.longitude,
           }}
         />
       </>
