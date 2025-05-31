@@ -5,18 +5,14 @@ import { Link, useRouter } from 'expo-router';
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 import { LeafletView } from 'react-native-leaflet-view';
-import * as Location from 'expo-location';
 import { useLocation } from '../../providers/location';
 
 const Map: React.FC = () => {
 
   const router = useRouter();
   const getLocation: any = useLocation();
-  let interval: NodeJS.Timeout;
   
   const [webViewContent, setWebViewContent] = useState<string | null>(null);
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
