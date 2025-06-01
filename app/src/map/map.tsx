@@ -57,6 +57,7 @@ const Map: React.FC = () => {
             lat: getLocation?.coords.latitude,
             lng: getLocation?.coords.longitude,
           }}
+          doDebug={false}
         />
       </>
     );
