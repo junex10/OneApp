@@ -57,6 +57,15 @@ const Map: React.FC = () => {
             lat: getLocation?.coords.latitude,
             lng: getLocation?.coords.longitude,
           }}
+          mapMarkers={[
+            {
+              position: {
+                lat: getLocation?.coords.latitude,
+                lng: getLocation?.coords.longitude,
+              },
+              icon: `<img src='./../../assets/icons/location-services-active-svgrepo-com.svg' />`
+            }
+          ]}
           doDebug={false}
         />
       </>
